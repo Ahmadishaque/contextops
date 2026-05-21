@@ -33,3 +33,7 @@ ContextOps is a production-style AI engineering project focused on building the 
 ## Development Status
 
 Current milestone: project scaffold.
+
+## Local Infrastructure
+
+Start local infrastructure services:

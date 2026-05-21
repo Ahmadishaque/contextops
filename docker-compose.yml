@@ -1,0 +1,43 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: contextops-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: contextops
+      POSTGRES_PASSWORD: contextops
+      POSTGRES_DB: contextops
+    ports:
+      - "5432:5432"
+    volumes:
+      - contextops_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U contextops -d contextops"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  qdrant:
+    image: qdrant/qdrant:v1.12.4
+    container_name: contextops-qdrant
+    restart: unless-stopped
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - contextops_qdrant_data:/qdrant/storage
+
+  redis:
+    image: redis:7
+    container_name: contextops-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - contextops_redis_data:/data
+    command: ["redis-server", "--appendonly", "yes"]
+
+volumes:
+  contextops_postgres_data:
+  contextops_qdrant_data:
+  contextops_redis_data:
