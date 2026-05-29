@@ -8,10 +8,12 @@ class Settings(BaseSettings):
 
     database_url: str = "postgresql://contextops:contextops@localhost:5432/contextops"
     qdrant_url: str = "http://localhost:6333"
+    qdrant_collection_name: str = "contextops_chunks"
     redis_url: str = "redis://localhost:6379/0"
 
     openai_api_key: str = "replace_me"
     embedding_model: str = "sentence-transformers/all-MiniLM-L6-v2"
+    embedding_dimension: int = 384
 
     log_level: str = "INFO"
 
