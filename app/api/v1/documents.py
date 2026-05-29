@@ -22,11 +22,12 @@ def ingest_document(
     db: DatabaseSession,
 ) -> DocumentIngestResponse:
     pipeline = DocumentIngestionPipeline(db=db)
-    document, chunk_count = pipeline.ingest(request)
+    document, chunk_count, indexed_chunk_count = pipeline.ingest(request)
 
     return DocumentIngestResponse(
         document_id=document.id,
         title=document.title,
         chunk_count=chunk_count,
+        indexed_chunk_count=indexed_chunk_count,
         status="ingested",
     )
