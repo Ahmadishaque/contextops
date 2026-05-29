@@ -1,5 +1,14 @@
+from typing import Any
+
 from qdrant_client import QdrantClient
-from qdrant_client.models import Distance, PointStruct, VectorParams
+from qdrant_client.models import (
+    Distance,
+    FieldCondition,
+    Filter,
+    MatchValue,
+    PointStruct,
+    VectorParams,
+)
 
 from app.core.config import settings
 
@@ -31,7 +40,7 @@ class QdrantVectorStore:
         self,
         point_ids: list[str],
         vectors: list[list[float]],
-        payloads: list[dict],
+        payloads: list[dict[str, Any]],
     ) -> None:
         if not point_ids:
             return
@@ -49,6 +58,33 @@ class QdrantVectorStore:
             collection_name=self.collection_name,
             points=points,
         )
+
+    def search_chunks(
+        self,
+        query_vector: list[float],
+        limit: int,
+        access_level: str,
+    ) -> list[Any]:
+        self.ensure_collection()
+
+        search_filter = Filter(
+            must=[
+                FieldCondition(
+                    key="access_level",
+                    match=MatchValue(value=access_level),
+                )
+            ]
+        )
+
+        query_response = self.client.query_points(
+            collection_name=self.collection_name,
+            query=query_vector,
+            query_filter=search_filter,
+            limit=limit,
+            with_payload=True,
+        )
+
+        return list(query_response.points)
 
 
 def get_vector_store() -> QdrantVectorStore:
