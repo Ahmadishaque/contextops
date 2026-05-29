@@ -14,4 +14,5 @@ class DocumentIngestResponse(BaseModel):
     document_id: str
     title: str
     chunk_count: int
+    indexed_chunk_count: int
     status: str
