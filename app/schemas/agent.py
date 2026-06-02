@@ -8,6 +8,7 @@ class AgentQueryRequest(BaseModel):
     limit: int = Field(default=5, ge=1, le=20)
     access_level: str = Field(default="private", max_length=50)
     max_context_chars: int = Field(default=4000, ge=500, le=20000)
+    owner_email: str = Field(default="demo@contextops.dev", max_length=255)
 
 
 class AgentQueryResponse(BaseModel):
@@ -18,3 +19,5 @@ class AgentQueryResponse(BaseModel):
     sources: list[ContextSource]
     provider: str
     model: str
+    trace_id: str | None = None
+    latency_ms: float | None = None
