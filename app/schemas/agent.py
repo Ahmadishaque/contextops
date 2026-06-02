@@ -16,3 +16,5 @@ class AgentQueryResponse(BaseModel):
     grounded: bool
     source_count: int
     sources: list[ContextSource]
+    provider: str
+    model: str

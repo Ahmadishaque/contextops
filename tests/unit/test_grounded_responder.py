@@ -1,11 +1,26 @@
-from app.schemas.context import ContextPackage, ContextSource
-from app.services.agent.grounded_responder import GroundedResponder
+from app.services.agent.mock_provider import MockLLMProvider
+from app.services.agent.prompts import AgentPromptBuilder
 
 
-def make_context_package(context_text: str) -> ContextPackage:
-    return ContextPackage(
-        query="What is the refund policy?",
-        context_text=context_text,
+def test_mock_provider_returns_grounded_prompt_preview() -> None:
+    provider = MockLLMProvider()
+
+    response = provider.generate(
+        system_prompt="Answer only from context.",
+        user_prompt="Retrieved context: enterprise customers must contact support.",
+    )
+
+    assert response.provider == "mock"
+    assert response.model == "mock-grounded-model"
+    assert "enterprise customers must contact support" in response.text
+
+
+def test_prompt_builder_includes_context_and_question() -> None:
+    from app.schemas.context import ContextPackage, ContextSource
+
+    context_package = ContextPackage(
+        query="What should customers provide?",
+        context_text="Customers should provide account ID and invoice number.",
         sources=[
             ContextSource(
                 chunk_id="chunk_1",
@@ -19,37 +34,12 @@ def make_context_package(context_text: str) -> ContextPackage:
             )
         ],
         source_count=1,
-        total_context_chars=len(context_text),
+        total_context_chars=55,
         truncated=False,
     )
 
+    user_prompt = AgentPromptBuilder.build_user_prompt(context_package)
 
-def test_grounded_responder_returns_fallback_when_no_context() -> None:
-    responder = GroundedResponder()
-
-    context_package = ContextPackage(
-        query="Unknown question",
-        context_text="",
-        sources=[],
-        source_count=0,
-        total_context_chars=0,
-        truncated=False,
-    )
-
-    answer = responder.generate_answer(context_package)
-
-    assert "could not find relevant context" in answer
-    assert "ingest relevant documents" in answer
-
-
-def test_grounded_responder_uses_context_when_available() -> None:
-    responder = GroundedResponder()
-    context_package = make_context_package(
-        "Enterprise customers must contact account support for refund requests."
-    )
-
-    answer = responder.generate_answer(context_package)
-
-    assert "Based on the retrieved context" in answer
-    assert "Enterprise customers must contact account support" in answer
-    assert "Refund Policy" in answer
+    assert "What should customers provide?" in user_prompt
+    assert "Customers should provide account ID" in user_prompt
+    assert "Do not use outside knowledge" in user_prompt
