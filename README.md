@@ -37,3 +37,29 @@ Current milestone: project scaffold.
 ## Local Infrastructure
 
 Start local infrastructure services:
+
+## Continuous Integration
+
+This project uses GitHub Actions to validate code quality on pull requests and pushes to `main`.
+
+CI checks include:
+
+- Ruff linting
+- Pytest unit tests
+
+Workflow file:
+
+```text
+.github/workflows/ci.yml
+
+
+## Continuous Integration
+
+This project uses GitHub Actions to validate code quality on pull requests and pushes to `main`.
+
+CI checks include:
+
+- Ruff linting
+- Pytest unit tests
+
+Workflow file: `.github/workflows/ci.yml`
