@@ -1,3 +1,4 @@
+from pydantic import SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -10,6 +11,8 @@ class Settings(BaseSettings):
     qdrant_url: str = "http://localhost:6333"
     qdrant_collection_name: str = "contextops_chunks"
     redis_url: str = "redis://localhost:6379/0"
+
+    contextops_api_key: SecretStr = SecretStr("dev-contextops-key")
 
     openai_api_key: str = "replace_me"
     openai_model: str = "gpt-5.5"
