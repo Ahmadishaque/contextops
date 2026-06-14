@@ -5,6 +5,7 @@ from app.api.v1 import (
     context,
     documents,
     evaluation,
+    feedback,
     health,
     retrieval,
     tools,
@@ -44,5 +45,9 @@ api_router.include_router(
 )
 api_router.include_router(
     tools.router,
+    dependencies=protected_dependencies,
+)
+api_router.include_router(
+    feedback.router,
     dependencies=protected_dependencies,
 )
