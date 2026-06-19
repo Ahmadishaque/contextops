@@ -23,3 +23,5 @@ mypy
 pre-commit
 email-validator
 openai
+streamlit
+requests
