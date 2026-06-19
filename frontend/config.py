@@ -26,7 +26,23 @@ def initialize_session_state() -> None:
 
 
 def get_frontend_config() -> FrontendConfig:
+    configured_base_url = str(
+        st.session_state.get(
+            "api_base_url",
+            DEFAULT_API_BASE_URL,
+        )
+    ).strip()
+
+    configured_api_key = str(
+        st.session_state.get(
+            "api_key",
+            DEFAULT_API_KEY,
+        )
+    ).strip()
+
+    api_base_url = configured_base_url or DEFAULT_API_BASE_URL
+
     return FrontendConfig(
-        api_base_url=str(st.session_state.api_base_url).rstrip("/"),
-        api_key=str(st.session_state.api_key),
+        api_base_url=api_base_url.rstrip("/"),
+        api_key=configured_api_key,
     )
