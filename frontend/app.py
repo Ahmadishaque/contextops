@@ -3,20 +3,13 @@
 from frontend.components.sidebar import render_sidebar_configuration
 from frontend.components.styles import apply_global_styles
 from frontend.config import initialize_session_state
-from frontend.pages import overview
+from frontend.pages import (
+    context_inspector,
+    ingestion,
+    overview,
+    retrieval,
+)
 from frontend.pages.placeholders import render_placeholder
-
-
-def render_ingestion() -> None:
-    render_placeholder("Ingestion")
-
-
-def render_retrieval() -> None:
-    render_placeholder("Retrieval")
-
-
-def render_context_inspector() -> None:
-    render_placeholder("Context Inspector")
 
 
 def render_agent_playground() -> None:
@@ -56,19 +49,19 @@ pages = {
             default=True,
         ),
         st.Page(
-            render_ingestion,
+            ingestion.render,
             title="Ingestion",
             icon=":material/upload_file:",
             url_path="ingestion",
         ),
         st.Page(
-            render_retrieval,
+            retrieval.render,
             title="Retrieval",
             icon=":material/search:",
             url_path="retrieval",
         ),
         st.Page(
-            render_context_inspector,
+            context_inspector.render,
             title="Context Inspector",
             icon=":material/account_tree:",
             url_path="context-inspector",
