@@ -4,29 +4,15 @@ from frontend.components.sidebar import render_sidebar_configuration
 from frontend.components.styles import apply_global_styles
 from frontend.config import initialize_session_state
 from frontend.pages import (
+    agent_playground,
     context_inspector,
+    evaluation_feedback,
     ingestion,
     overview,
     retrieval,
+    tools,
+    trace_explorer,
 )
-from frontend.pages.placeholders import render_placeholder
-
-
-def render_agent_playground() -> None:
-    render_placeholder("Agent Playground")
-
-
-def render_trace_explorer() -> None:
-    render_placeholder("Trace Explorer")
-
-
-def render_evaluation_feedback() -> None:
-    render_placeholder("Evaluation & Feedback")
-
-
-def render_tools() -> None:
-    render_placeholder("Tools")
-
 
 st.set_page_config(
     page_title="ContextOps",
@@ -69,25 +55,25 @@ pages = {
     ],
     "Execution": [
         st.Page(
-            render_agent_playground,
+            agent_playground.render,
             title="Agent Playground",
             icon=":material/smart_toy:",
             url_path="agent-playground",
         ),
         st.Page(
-            render_trace_explorer,
+            trace_explorer.render,
             title="Trace Explorer",
             icon=":material/timeline:",
             url_path="trace-explorer",
         ),
         st.Page(
-            render_evaluation_feedback,
+            evaluation_feedback.render,
             title="Evaluation & Feedback",
             icon=":material/rate_review:",
             url_path="evaluation-feedback",
         ),
         st.Page(
-            render_tools,
+            tools.render,
             title="Tools",
             icon=":material/construction:",
             url_path="tools",

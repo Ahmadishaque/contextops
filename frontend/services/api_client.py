@@ -86,6 +86,72 @@ class ContextOpsAPIClient:
             path=endpoints.CONTEXT_ASSEMBLY,
             json_body=payload,
         )
+        
+    def query_agent(
+        self,
+        payload: dict[str, Any],
+    ) -> APIResponse:
+        return self._request(
+            method="POST",
+            path=endpoints.AGENT_QUERY,
+            json_body=payload,
+        )
+
+    def get_trace(
+        self,
+        trace_id: str,
+    ) -> APIResponse:
+        return self._request(
+            method="GET",
+            path=endpoints.TRACE_DETAIL.format(trace_id=trace_id),
+        )
+
+    def evaluate_response(
+        self,
+        payload: dict[str, Any],
+    ) -> APIResponse:
+        return self._request(
+            method="POST",
+            path=endpoints.EVALUATION,
+            json_body=payload,
+        )
+
+    def create_feedback(
+        self,
+        payload: dict[str, Any],
+    ) -> APIResponse:
+        return self._request(
+            method="POST",
+            path=endpoints.FEEDBACK_CREATE,
+            json_body=payload,
+        )
+
+    def get_feedback(
+        self,
+        feedback_id: str,
+    ) -> APIResponse:
+        return self._request(
+            method="GET",
+            path=endpoints.FEEDBACK_DETAIL.format(
+                feedback_id=feedback_id
+            ),
+        )
+
+    def list_tools(self) -> APIResponse:
+        return self._request(
+            method="GET",
+            path=endpoints.TOOLS,
+        )
+
+    def run_tool(
+        self,
+        payload: dict[str, Any],
+    ) -> APIResponse:
+        return self._request(
+            method="POST",
+            path=endpoints.TOOL_RUN,
+            json_body=payload,
+        )
 
     def _request(
         self,
